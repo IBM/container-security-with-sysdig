@@ -1,6 +1,6 @@
-# Exercise Title
+# Setting up the DevOps Pipeline
 
-Description goes here.
+In this section we will set up the CI/CD pipeline for building, testing, scanning, pushing, and deploying our container images.
 
 This section is comprised of the following steps:
 

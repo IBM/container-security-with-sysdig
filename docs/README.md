@@ -1,11 +1,12 @@
 # Introduction
 
-## Workshop Title
+## Container Security with Sysdig
 
-Welcome to our workshop! In this workshop we'll be using foo to accomplish bar. The goals of this workshop are:
+Welcome to our workshop! In this workshop we'll be using Sysdig Secure on IBM Cloud to scan container images and evaluate OpenShift Clusters for compliance. The goals of this workshop are:
 
-* Goals!
-* Have fun!
+* Create a CI/CD pipeline that incorporates container scanning
+* Explore runtime scanning policies
+* Take a look at compliance scanning
 
 ### About this workshop
 

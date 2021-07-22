@@ -1,0 +1,97 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-and-deploy
+spec:
+  workspaces:
+  - name: shared-workspace
+  params:
+  - name: pathToYamlFile
+    type: string
+    description: The path to the yaml file to deploy
+  - name: git-url
+    type: string
+    description: url of the git repo for the code of deployment
+  - name: git-revision
+    type: string
+    description: revision to be used from repo of the code for deployment
+    default: "master"
+  - name: image
+    type: string
+    description: image to be build from the code
+  - name: sysdig-token
+    type: string
+    description: The api token for sysdig
+  tasks:
+
+  # https://hub.tekton.dev/tekton/task/git-clone
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+      kind: ClusterTask
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: url
+      value: $(params.git-url)
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+    - name: revision
+      value: $(params.git-revision)
+
+  # https://hub.tekton.dev/tekton/task/buildah
+  - name: build-image
+    taskRef:
+      name: buildah
+      kind: ClusterTask
+    params:
+    - name: IMAGE
+      value: $(params.image)
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    runAfter:
+    - fetch-repository
+
+  # - name: build-image
+  #   taskRef:
+  #     name: kaniko
+  #   params:
+  #   - name: IMAGE
+  #     value: $(params.image)
+  #   workspaces:
+  #   - name: source
+  #     workspace: shared-workspace
+  #   runAfter:
+  #     - fetch-repository
+  #   # - name: dockerconfig
+  #   #   secret:
+  #   #     secretName: my-secret
+
+  - name: scan-image
+    taskRef: 
+      name: scan-image
+    params:
+    - name: image
+      value: $(params.image)
+    - name: sysdig-token
+      value: $(params.sysdig-token)
+    runAfter:
+    - build-image
+
+  - name: deploy-app
+    taskRef:
+      name: deploy-using-kubectl
+    params:
+    - name: pathToYamlFile
+      value: $(params.pathToYamlFile)
+    - name: image
+      value: $(params.image)
+    workspaces:
+    - name: source
+      workspace: shared-workspace 
+    runAfter:
+    - scan-image

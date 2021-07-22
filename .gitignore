@@ -82,3 +82,5 @@ Session.vim
 .netrwhist
 *~
 tags
+
+src/devOpsPipeline/pipelineRun.yaml

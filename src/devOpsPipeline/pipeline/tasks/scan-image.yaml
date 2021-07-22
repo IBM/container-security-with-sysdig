@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: scan-image
+spec:
+  params:
+    - name: image
+    - name: sysdig-token
+  steps:
+  - name: scan-image-step
+    image: quay.io/sysdig/secure-inline-scan:2
+    args: [$(params.image), "--sysdig-token", "$(params.sysdig-token)", "--sysdig-url", "https://us-south.monitoring.cloud.ibm.com/"]
+    # env:
+    # - name: IMAGE_TO_SCAN
+    #   value: $(params.image)
+    # - name: SYSDIG_SECURE_TOKEN
+    #   value: 9b1a3305-a7df-41db-86c4-a91c3b1432e9
