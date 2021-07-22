@@ -8,21 +8,11 @@ Welcome to our workshop! In this workshop we'll be using Sysdig Secure on IBM Cl
 * Explore runtime scanning policies
 * Take a look at compliance scanning
 
-### About this workshop
-
-The introductory page of the workshop is broken down into the following sections:
-
-* [Agenda](./#agenda)
-* [Compatibility](./#compatibility)
-* [Technology Used](./#technology-used)
-* [Credits](./#credits)
-
 ## Agenda
 
 |  |  |
 | :--- | :--- |
-| [Lab 0: Pre-work](pre-work/README.md) | Pre-work for the project |
-| [Lab 1: Some Title](lab-1/README.md) | Exercise to do the thing |
+| [Lab 1: Sysdig Introduction](lab1/README.md) | Exercise to do the thing |
 
 ## Compatibility
 
